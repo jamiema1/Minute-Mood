@@ -2,10 +2,9 @@ import React from "react"
 import 'app'
 import PageRouter from "modules/pageRouter"
 
-function App() {
+export default function App() {
   return (
     <PageRouter></PageRouter>
   )
 }
 
-export default App
