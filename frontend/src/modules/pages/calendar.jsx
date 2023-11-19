@@ -4,7 +4,10 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {DateCalendar} from '@mui/x-date-pickers/DateCalendar'
 
 import Modal from "react-bootstrap/Modal"
-import AddJounalForm from "./addJournalForm/addJounalForm"
+import AddJournalForm from "./addJournalForm/addJournalForm"
+
+import {useQuery} from "react-query"
+import axios, {handleError, journalEndpoint} from "modules/api/axios"
 
 export default function BasicDateCalendar() {
   
@@ -13,6 +16,24 @@ export default function BasicDateCalendar() {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  
+  
+  const {isLoading: isLoadingJournals, data: journalData} = useQuery(
+    journalEndpoint,
+    () => axios.get(journalEndpoint),
+    {
+      onError: (error) => handleError(error),
+    }
+  )
+
+  if (isLoadingJournals) {
+    return <div>Loading...</div>
+  }
+
+  const journal = [journalData].filter((journal) => {
+    journal.date == date
+  })
 
   return (
     <>
@@ -40,8 +61,8 @@ export default function BasicDateCalendar() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddJounalForm dateString={date.toLocaleDateString()}>
-          </AddJounalForm>
+          <AddJournalForm journal={journal} handleClose={handleClose}>
+          </AddJournalForm>
         </Modal.Body>
       </Modal>
     </>
