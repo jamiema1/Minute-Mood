@@ -12,6 +12,8 @@ const RatingInput = forwardRef(function RatingInput(
     "On the scale of 1 (not so great) to 10 (amazing), I am feeling:"
   const ariaLabel = "Rating"
   
+  // TODO: limit input to 1-10
+
   return (
     <>
       <Form.Label>{title}</Form.Label>

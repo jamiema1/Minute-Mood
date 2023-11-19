@@ -6,8 +6,10 @@ import AffirmationsInput from './components/affirmationsInput'
 import AmazingThingsInput from './components/amazingThingsInput'
 import TodayBetterInput from './components/todayBetterInput'
 import RatingInput from './components/ratingInput'
+import axios, {handleError, journalEndpoint} from 'modules/api/axios'
+import {useMutation, useQuery, useQueryClient} from "react-query"
 
-export default function AddJounalForm({dateString}) {
+export default function AddJournalForm({journal, handleClose}) {
 
   const ratingRef = useRef()
 
@@ -29,9 +31,59 @@ export default function AddJounalForm({dateString}) {
   const todaybetterRef1 = useRef()
   const todaybetterRef2 = useRef()
 
+
+  const queryClient = useQueryClient()
+  
+  const {isLoading: isLoadingJournals, data: journalData} = useQuery(
+    journalEndpoint,
+    () => axios.get(journalEndpoint),
+    {
+      onError: (error) => handleError(error),
+    }
+  )
+
+  const editJournal = useMutation(
+    ({journalId, newJournal}) =>
+      axios.put(journalEndpoint + "/" + journalId, newJournal),
+    {
+      onSuccess: (data, {journalId, newJournal}) => {
+        queryClient.setQueryData(journalEndpoint, {
+          data: {
+            data: [...journalData.data.data].map((journal) => {
+              return journal.id === journalId ? 
+                {id: journalId, ...newJournal} : journal
+            }),
+          },
+        })
+      },
+      onError: (error) => handleError(error),
+    }
+  )
+
+  if (isLoadingJournals) {
+    return <div>Loading...</div>
+  }
+
+  const newJournal = {
+    rating: ratingRef.current.value,
+    grateful1: gratefulRef1.current.value,
+    grateful2: gratefulRef2.current.value,
+    grateful3: gratefulRef3.current.value,
+    todayGreat1: todayGreatRef1.current.value,
+    todayGreat2: todayGreatRef2.current.value,
+    todayGreat3: todayGreatRef3.current.value,
+    affirmations1: affirmationsRef1.current.value,
+    affirmations2: affirmationsRef2.current.value,
+    amazing1: amazingthingsRef1.current.value,
+    amazing2: amazingthingsRef2.current.value,
+    amazing3: amazingthingsRef3.current.value,
+    better1: todaybetterRef1.current.value,
+    better2: todaybetterRef2.current.value,
+    date: journal.date
+  }
+
   return (
     <>
-      <div>{dateString}</div>
       <RatingInput 
         ref={ratingRef}
       />
@@ -66,8 +118,15 @@ export default function AddJounalForm({dateString}) {
           console.log(amazingthingsRef3.current.value)
           console.log(todaybetterRef1.current.value)
           console.log(todaybetterRef2.current.value)
+
+          editJournal.mutate({
+            journalId: journal.id,
+            newJournal: newJournal
+          })
+          handleClose()
         }}
-      >Test Submit</Button>
+      >Save</Button>
+      <Button onClick={() => handleClose()}>Cancel</Button>
     </>
   )
 }
