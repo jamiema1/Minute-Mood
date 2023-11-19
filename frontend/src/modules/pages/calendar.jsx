@@ -4,7 +4,7 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {DateCalendar} from '@mui/x-date-pickers/DateCalendar'
 
 import Modal from "react-bootstrap/Modal"
-import dayjs from "dayjs"
+import AddJounalForm from "./addJournalForm/addJounalForm"
 
 export default function BasicDateCalendar() {
   
@@ -18,17 +18,31 @@ export default function BasicDateCalendar() {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar 
+          // sx={{
+          //   minWidth: 500
+          // }}
+          views={['day']}
           onChange={(newDate) => {
             setDate(new Date(newDate))
             handleShow()
           }} 
-          defaultValue={dayjs(new Date())}/>
+        />
       </LocalizationProvider>
-      <Modal show={show} onHide={handleClose} backdrop="static" centered>
+      <Modal
+        show={show} 
+        onHide={handleClose} 
+        backdrop="static" 
+        centered
+      >
         <Modal.Header closeButton>
-          <Modal.Title>{"5-Minute Journal"}</Modal.Title>
+          <Modal.Title>
+            {"5-Minute Journal - " + date.toLocaleDateString()}
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>{date.toLocaleDateString()}</Modal.Body>
+        <Modal.Body>
+          <AddJounalForm dateString={date.toLocaleDateString()}>
+          </AddJounalForm>
+        </Modal.Body>
       </Modal>
     </>
   )
