@@ -15,3 +15,10 @@ export const ROOT_NAME = local ? localRoot : serverRoot
 export default Axios.create({
   baseURL: HOST_NAME,
 })
+
+export const journalEndpoint = "./journal"
+
+export const handleError = (error) => {
+  console.log(error.message + ": " + error.response.data.error)
+  alert(error.message + ": " + error.response.data.error)
+}
