@@ -164,8 +164,8 @@ export default function AddJournalForm({journal={}, handleClose}) {
       <TodayBetterInput
         ref={{todayBetterRef1, todayBetterRef2}}
         defaultValue={{
-          todayBetterDefaultValue1: journal.affirmations1,
-          todayBetterDefaultValue2: journal.affirmations2, 
+          todayBetterDefaultValue1: journal.better1,
+          todayBetterDefaultValue2: journal.better2, 
         }}
       ></TodayBetterInput>
       <Button
