@@ -8,8 +8,10 @@ import TodayBetterInput from './components/todayBetterInput'
 import RatingInput from './components/ratingInput'
 import axios, {handleError, journalEndpoint} from 'modules/api/axios'
 import {useMutation, useQuery, useQueryClient} from "react-query"
+import DeleteButtonModal from 'modules/common/components/deleteButtonModal'
 
-export default function AddJournalForm({journal, handleClose}) {
+export default function AddJournalForm({journal={}, handleClose}) {
+
 
   const ratingRef = useRef()
 
@@ -24,12 +26,12 @@ export default function AddJournalForm({journal, handleClose}) {
   const affirmationsRef1 = useRef()
   const affirmationsRef2 = useRef()
 
-  const amazingthingsRef1 = useRef()
-  const amazingthingsRef2 = useRef()
-  const amazingthingsRef3 = useRef()
+  const amazingThingsRef1 = useRef()
+  const amazingThingsRef2 = useRef()
+  const amazingThingsRef3 = useRef()
 
-  const todaybetterRef1 = useRef()
-  const todaybetterRef2 = useRef()
+  const todayBetterRef1 = useRef()
+  const todayBetterRef2 = useRef()
 
 
   const queryClient = useQueryClient()
@@ -42,9 +44,28 @@ export default function AddJournalForm({journal, handleClose}) {
     }
   )
 
+  const addJournal = useMutation(
+    (newJournal) => axios.post(journalEndpoint, newJournal),
+    {
+      onSuccess: (data, newJournal) => {
+        queryClient.setQueryData(journalEndpoint, {
+          data: {
+            data: [
+              ...journalData.data.data,
+              {id: data.data.data[0].id, ...newJournal},
+            ],
+          },
+        })
+      },
+
+      onError: (error) => handleError(error),
+    }
+  )
+
   const editJournal = useMutation(
-    ({journalId, newJournal}) =>
-      axios.put(journalEndpoint + "/" + journalId, newJournal),
+    ({journalId, newJournal}) => {
+      axios.put(journalEndpoint + "/" + journalId, newJournal)
+    },
     {
       onSuccess: (data, {journalId, newJournal}) => {
         queryClient.setQueryData(journalEndpoint, {
@@ -60,73 +81,115 @@ export default function AddJournalForm({journal, handleClose}) {
     }
   )
 
+  const deleteJournal = useMutation(
+    (journalId) => axios.delete(journalEndpoint + "/" + journalId),
+    {
+      onSuccess: (data, journalId) => {
+        queryClient.setQueryData(journalEndpoint, {
+          data: {
+            data: [...journalData.data.data].filter((journal) => {
+              return journal.id !== journalId
+            }),
+          },
+        })
+      },
+      onError: (error) => handleError(error),
+    }
+  )
+
   if (isLoadingJournals) {
     return <div>Loading...</div>
   }
 
-  const newJournal = {
-    rating: ratingRef.current.value,
-    grateful1: gratefulRef1.current.value,
-    grateful2: gratefulRef2.current.value,
-    grateful3: gratefulRef3.current.value,
-    todayGreat1: todayGreatRef1.current.value,
-    todayGreat2: todayGreatRef2.current.value,
-    todayGreat3: todayGreatRef3.current.value,
-    affirmations1: affirmationsRef1.current.value,
-    affirmations2: affirmationsRef2.current.value,
-    amazing1: amazingthingsRef1.current.value,
-    amazing2: amazingthingsRef2.current.value,
-    amazing3: amazingthingsRef3.current.value,
-    better1: todaybetterRef1.current.value,
-    better2: todaybetterRef2.current.value,
-    date: journal.date
+  const newJournalFlag = journalData.data.data.filter((currentJournal) => 
+    journal.date == currentJournal.date).length == 0
+
+  function newJournal() { 
+    return {
+      rating: parseInt(ratingRef.current.value),
+      grateful1: gratefulRef1.current.value,
+      grateful2: gratefulRef2.current.value,
+      grateful3: gratefulRef3.current.value,
+      todayGreat1: todayGreatRef1.current.value,
+      todayGreat2: todayGreatRef2.current.value,
+      todayGreat3: todayGreatRef3.current.value,
+      affirmations1: affirmationsRef1.current.value,
+      affirmations2: affirmationsRef2.current.value,
+      amazing1: amazingThingsRef1.current.value,
+      amazing2: amazingThingsRef2.current.value,
+      amazing3: amazingThingsRef3.current.value,
+      better1: todayBetterRef1.current.value,
+      better2: todayBetterRef2.current.value,
+      date: journal.date
+    }
   }
 
   return (
     <>
       <RatingInput 
         ref={ratingRef}
+        defaultValue={journal.rating}
       />
       <GratefulInput
         ref={{gratefulRef1, gratefulRef2, gratefulRef3}}
+        defaultValue={{
+          gratefulDefaultValue1: journal.grateful1,
+          gratefulDefaultValue2: journal.grateful2, 
+          gratefulDefaultValue3: journal.grateful3
+        }}
       />
       <TodayGreatInput
         ref={{todayGreatRef1, todayGreatRef2, todayGreatRef3}}
+        defaultValue={{
+          todayGreatDefaultValue1: journal.todayGreat1,
+          todayGreatDefaultValue2: journal.todayGreat2, 
+          todayGreatDefaultValue3: journal.todayGreat3
+        }}
       />
       <AffirmationsInput
         ref={{affirmationsRef1, affirmationsRef2}}
+        defaultValue={{
+          affirmationsDefaultValue1: journal.affirmations1,
+          affirmationsDefaultValue2: journal.affirmations2, 
+        }}
       />
       <AmazingThingsInput
-        ref={{amazingthingsRef1, amazingthingsRef2, amazingthingsRef3}}
+        ref={{amazingThingsRef1, amazingThingsRef2, amazingThingsRef3}}
+        defaultValue={{
+          amazingThingsDefaultValue1: journal.amazing1,
+          amazingThingsDefaultValue2: journal.amazing2, 
+          amazingThingsDefaultValue3: journal.amazing3
+        }}
       />
       <TodayBetterInput
-        ref={{todaybetterRef1, todaybetterRef2}}
+        ref={{todayBetterRef1, todayBetterRef2}}
+        defaultValue={{
+          todayBetterDefaultValue1: journal.affirmations1,
+          todayBetterDefaultValue2: journal.affirmations2, 
+        }}
       ></TodayBetterInput>
       <Button
         onClick={() => {
-          console.log(ratingRef.current.value)
-          console.log(gratefulRef1.current.value)
-          console.log(gratefulRef2.current.value)
-          console.log(gratefulRef3.current.value)
-          console.log(todayGreatRef1.current.value)
-          console.log(todayGreatRef2.current.value)
-          console.log(todayGreatRef3.current.value)
-          console.log(affirmationsRef1.current.value)
-          console.log(affirmationsRef2.current.value)
-          console.log(amazingthingsRef1.current.value)
-          console.log(amazingthingsRef2.current.value)
-          console.log(amazingthingsRef3.current.value)
-          console.log(todaybetterRef1.current.value)
-          console.log(todaybetterRef2.current.value)
-
-          editJournal.mutate({
-            journalId: journal.id,
-            newJournal: newJournal
-          })
+          if (newJournalFlag) {
+            addJournal.mutate(newJournal())
+          } else {
+            editJournal.mutate({
+              journalId: journal.id,
+              newJournal: newJournal()
+            })
+          }
           handleClose()
         }}
       >Save</Button>
       <Button onClick={() => handleClose()}>Cancel</Button>
+      {!newJournalFlag &&
+        <DeleteButtonModal 
+          confirmAction={() => {
+            deleteJournal.mutate(journal.id)
+            handleClose()
+          }}
+          title={"Delete Entry"}>
+        </DeleteButtonModal>}
     </>
   )
 }

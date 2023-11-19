@@ -3,15 +3,15 @@ import React, {forwardRef} from "react"
 import InputGroup from 'react-bootstrap/InputGroup'
 import Form from "react-bootstrap/Form"
 
-const AmazingThingsInput = forwardRef(function AmazingThingsInput(
+const amazingThingsInput = forwardRef(function amazingThingsInput(
   {defaultValue = ""},
   ref
 ) {
-  const {amazingthingsRef1, amazingthingsRef2, amazingthingsRef3} = ref
+  const {amazingThingsRef1, amazingThingsRef2, amazingThingsRef3} = ref
   const {
-    amazingthingsDefaultValue1, 
-    amazingthingsDefaultValue2,
-    amazingthingsDefaultValue3
+    amazingThingsDefaultValue1, 
+    amazingThingsDefaultValue2,
+    amazingThingsDefaultValue3
   } = defaultValue
 
   const inputs = [1,2,3]
@@ -25,25 +25,25 @@ const AmazingThingsInput = forwardRef(function AmazingThingsInput(
         <InputGroup.Text>{inputs[0]}.</InputGroup.Text>
         <Form.Control 
           aria-label={ariaLabel + inputs[0]}
-          defaultValue={amazingthingsDefaultValue1}
-          ref={amazingthingsRef1} />
+          defaultValue={amazingThingsDefaultValue1}
+          ref={amazingThingsRef1} />
       </InputGroup>
       <InputGroup>
         <InputGroup.Text>{inputs[1]}.</InputGroup.Text>
         <Form.Control 
           aria-label={ariaLabel + inputs[1]}
-          defaultValue={amazingthingsDefaultValue2}
-          ref={amazingthingsRef2} />
+          defaultValue={amazingThingsDefaultValue2}
+          ref={amazingThingsRef2} />
       </InputGroup>
       <InputGroup className="mb-4">
         <InputGroup.Text>{inputs[2]}.</InputGroup.Text>
         <Form.Control 
           aria-label={ariaLabel + inputs[2]}
-          defaultValue={amazingthingsDefaultValue3}
-          ref={amazingthingsRef3} />
+          defaultValue={amazingThingsDefaultValue3}
+          ref={amazingThingsRef3} />
       </InputGroup>
     </>
   )
 })
 
-export default AmazingThingsInput
+export default amazingThingsInput

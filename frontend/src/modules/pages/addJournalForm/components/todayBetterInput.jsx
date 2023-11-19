@@ -7,10 +7,10 @@ const TodayBetterInput = forwardRef(function TodayBetterInput(
   {defaultValue = ""},
   ref
 ) {
-  const {todaybetterRef1, todaybetterRef2} = ref
+  const {todayBetterRef1, todayBetterRef2} = ref
   const {
-    todaybetterDefaultValue1, 
-    todaybetterDefaultValue2
+    todayBetterDefaultValue1, 
+    todayBetterDefaultValue2
   } = defaultValue
 
   const inputs = [1,2]
@@ -24,15 +24,15 @@ const TodayBetterInput = forwardRef(function TodayBetterInput(
         <InputGroup.Text>{inputs[0]}.</InputGroup.Text>
         <Form.Control 
           aria-label={ariaLabel + inputs[0]}
-          defaultValue={todaybetterDefaultValue1}
-          ref={todaybetterRef1} />
+          defaultValue={todayBetterDefaultValue1}
+          ref={todayBetterRef1} />
       </InputGroup>
       <InputGroup className="mb-4">
         <InputGroup.Text>{inputs[1]}.</InputGroup.Text>
         <Form.Control 
           aria-label={ariaLabel + inputs[1]}
-          defaultValue={todaybetterDefaultValue2}
-          ref={todaybetterRef2} />
+          defaultValue={todayBetterDefaultValue2}
+          ref={todayBetterRef2} />
       </InputGroup>
     </>
   )

@@ -30,10 +30,20 @@ export default function BasicDateCalendar() {
   if (isLoadingJournals) {
     return <div>Loading...</div>
   }
+  
 
-  const journal = [journalData].filter((journal) => {
-    journal.date == date
-  })
+  const journal = () => {
+    const selectedJournal = journalData.data.data.filter((journal) => {
+      return journal.date.split("T")[0] == date.toISOString().split("T")[0]
+    })
+
+    if (selectedJournal.length == 1) {
+      return selectedJournal[0]
+    } else {
+      return {date: date.toISOString()}
+    }
+
+  }
 
   return (
     <>
@@ -61,8 +71,7 @@ export default function BasicDateCalendar() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddJournalForm journal={journal} handleClose={handleClose}>
-          </AddJournalForm>
+          <AddJournalForm journal={journal()} handleClose={handleClose} />
         </Modal.Body>
       </Modal>
     </>
