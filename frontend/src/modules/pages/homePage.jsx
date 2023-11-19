@@ -5,8 +5,10 @@ export default function HomePage() {
   return (
     <>
       <div>HomePage</div>
-      <DeleteButtonModal confirmAction={() => alert("deleted")} 
-        title={"Test Delete"}></DeleteButtonModal>
+      <DeleteButtonModal 
+        confirmAction={() => alert("deleted")} 
+        title={"Test Delete"}
+      ></DeleteButtonModal>
     </>
   )
 }
