@@ -1,3 +1,38 @@
 .logo {
   width: 50px;
 }
+
+.homepageImg {
+  width:70%;
+  padding-top: 100px;
+}
+
+.body {
+  align-items: center;
+  
+}
+
+@media (max-width: 600px) {
+  .body {
+    height: 600px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: end; /* horizontally */
+    align-items: center; /* vertically */
+    align-content: center;
+    
+  }
+  .homepageImg {
+    padding-top: 50px;
+    margin-bottom: 50px;
+  }
+  .imgCol {
+    display:flex;
+    width: max-content;
+    justify-content: center; /* horizontally */
+
+  }
+  .rightHalf {
+    text-align: center;
+  }
+}
