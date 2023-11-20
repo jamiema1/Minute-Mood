@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Minute-Mood/static/css/main.d2aa70b2.css",
-    "main.js": "/Minute-Mood/static/js/main.bf4f9a33.js",
+    "main.js": "/Minute-Mood/static/js/main.9f7ac413.js",
     "index.html": "/Minute-Mood/index.html",
     "main.d2aa70b2.css.map": "/Minute-Mood/static/css/main.d2aa70b2.css.map",
-    "main.bf4f9a33.js.map": "/Minute-Mood/static/js/main.bf4f9a33.js.map"
+    "main.9f7ac413.js.map": "/Minute-Mood/static/js/main.9f7ac413.js.map"
   },
   "entrypoints": [
     "static/css/main.d2aa70b2.css",
-    "static/js/main.bf4f9a33.js"
+    "static/js/main.9f7ac413.js"
   ]
 }
