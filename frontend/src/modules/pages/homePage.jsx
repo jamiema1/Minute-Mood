@@ -3,6 +3,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
 export default function HomePage() {
   return (
@@ -16,7 +17,9 @@ export default function HomePage() {
             </img> </Col>
           <Col className="rightHalf">
             <Row><h1>Get comfy and elevate your day in 5 minutes</h1></Row>
-            <Row> <button>Let's go!</button></Row>
+            <Row className="butRow"> 
+              <Button variant="light" className="button">Let's go!</Button>
+            </Row>
           </Col>
         </Row>
         
