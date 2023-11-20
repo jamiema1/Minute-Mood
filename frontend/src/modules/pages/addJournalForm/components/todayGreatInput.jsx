@@ -21,7 +21,7 @@ const TodayGreatInput = forwardRef(function TodayGreatInput(
 
   return (
     <>
-      <Form.Label>{title}</Form.Label>
+      <Form.Label className="questionTitle">{title}</Form.Label>
       <InputGroup>
         <InputGroup.Text>{inputs[0]}.</InputGroup.Text>
         <Form.Control 

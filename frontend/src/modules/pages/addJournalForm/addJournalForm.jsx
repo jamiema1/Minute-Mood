@@ -9,6 +9,8 @@ import RatingInput from './components/ratingInput'
 import axios, {handleError, journalEndpoint} from 'modules/api/axios'
 import {useMutation, useQuery, useQueryClient} from "react-query"
 import DeleteButtonModal from 'modules/common/components/deleteButtonModal'
+import Stack from 'react-bootstrap/Stack'
+
 
 export default function AddJournalForm({journal={}, handleClose}) {
 
@@ -104,9 +106,10 @@ export default function AddJournalForm({journal={}, handleClose}) {
   const newJournalFlag = journalData.data.data.filter((currentJournal) => 
     journal.date == currentJournal.date).length == 0
 
-  function newJournal() { 
+  function newJournal() {
     return {
-      rating: parseInt(ratingRef.current.value),
+      rating: isNaN(parseInt(ratingRef.current.value)) ?
+        0: parseInt(ratingRef.current.value),
       grateful1: gratefulRef1.current.value,
       grateful2: gratefulRef2.current.value,
       grateful3: gratefulRef3.current.value,
@@ -168,21 +171,28 @@ export default function AddJournalForm({journal={}, handleClose}) {
           todayBetterDefaultValue2: journal.better2, 
         }}
       ></TodayBetterInput>
-      <Button
-        onClick={() => {
-          if (newJournalFlag) {
-            addJournal.mutate(newJournal())
-          } else {
-            editJournal.mutate({
-              journalId: journal.id,
-              newJournal: newJournal()
-            })
-          }
-          handleClose()
-        }}
-      >Save</Button>
-      <Button onClick={() => handleClose()}>Cancel</Button>
-      {!newJournalFlag &&
+      <Stack
+        direction="horizontal"
+        gap={3}
+        className="journalbuttonStack"
+      >
+        <Button
+          onClick={() => {
+            if (newJournalFlag) {
+              addJournal.mutate(newJournal())
+            } else {
+              editJournal.mutate({
+                journalId: journal.id,
+                newJournal: newJournal()
+              })
+            }
+            handleClose()
+          }}
+        >Save</Button>
+        <Button 
+          variant="secondary" 
+          onClick={() => handleClose()}>Cancel</Button>
+        {!newJournalFlag &&
         <DeleteButtonModal 
           confirmAction={() => {
             deleteJournal.mutate(journal.id)
@@ -190,6 +200,8 @@ export default function AddJournalForm({journal={}, handleClose}) {
           }}
           title={"Delete Entry"}>
         </DeleteButtonModal>}
+      </Stack>
+      
     </>
   )
 }
