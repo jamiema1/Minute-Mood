@@ -49,9 +49,7 @@ export default function BasicDateCalendar() {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar 
-          // sx={{
-          //   minWidth: 500
-          // }}
+          className="dateCalendar"
           views={['day']}
           onChange={(newDate) => {
             setDate(new Date(newDate))

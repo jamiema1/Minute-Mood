@@ -2,7 +2,7 @@ import React from 'react'
 
 import {HashRouter as Router, Routes, Route} from "react-router-dom"
 import HomePage from './pages/homePage'
-import JournalPage from './pages/journals'
+import JournalPage from './pages/journalPage'
 
 export default function PageRouter() {
   return (

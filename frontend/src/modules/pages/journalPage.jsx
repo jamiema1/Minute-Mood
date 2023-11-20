@@ -3,6 +3,6 @@ import Calendar from './calendar'
 
 export default function JournalPage() {
   return (
-    <Calendar></Calendar>
+    <Calendar />
   )
 }

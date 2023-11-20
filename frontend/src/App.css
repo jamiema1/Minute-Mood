@@ -2,6 +2,18 @@
   width: 50px;
 }
 
+#root {
+  min-height: 600px
+}
+
+.dateCalendar {
+  padding-top: 75px;
+  transform: scale(1.6);
+  @media (max-width: 800px) {
+    transform: scale(1.0);
+  }
+}
+
 .homepageImg {
   width:70%;
   padding-top: 100px;
