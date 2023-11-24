@@ -9,6 +9,9 @@ import AddJournalForm from "./addJournalForm/addJournalForm"
 import {useQuery} from "react-query"
 import axios, {handleError, journalEndpoint} from "modules/api/axios"
 
+import {Badge} from "@mui/material"
+import {PickersDay} from "@mui/x-date-pickers"
+
 export default function BasicDateCalendar() {
   
   const [show, setShow] = useState(false)
@@ -42,21 +45,44 @@ export default function BasicDateCalendar() {
     } else {
       return {date: date.toISOString()}
     }
-
   }
+
 
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <div className="dateCalendarSpacer"></div>
         <DateCalendar 
-          // sx={{
-          //   minWidth: 500
-          // }}
+          className="dateCalendar"
           views={['day']}
           onChange={(newDate) => {
             setDate(new Date(newDate))
             handleShow()
           }} 
+          shouldDisableDate={(date) => {
+            return new Date().toISOString().split("T")[0] <= 
+              new Date(date).toISOString().split("T")[0]
+          }
+          }
+          slots={{
+            day: (props) => {
+              const isSelected = !props.outsideCurrentMonth && 
+              [...journalData.data.data].map((journal) => {
+                return new Date(journal.date).toISOString().split("T")[0]
+              }).indexOf(new Date(props.day).toISOString().split("T")[0]) >= 0
+
+
+              return (
+                <Badge
+                  key={props.day.toString()}
+                  overlap="circular"
+                  badgeContent={isSelected ? '✅' : undefined}
+                >
+                  <PickersDay {...props} />
+                </Badge>
+              )
+            },
+          }}
         />
       </LocalizationProvider>
       <Modal
@@ -65,12 +91,15 @@ export default function BasicDateCalendar() {
         backdrop="static" 
         centered
       >
-        <Modal.Header closeButton>
+        <Modal.Header
+          className="modalHeader"
+          closeButton
+        >
           <Modal.Title>
             {"5-Minute Journal - " + date.toLocaleDateString()}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="modalBody">
           <AddJournalForm journal={journal()} handleClose={handleClose} />
         </Modal.Body>
       </Modal>

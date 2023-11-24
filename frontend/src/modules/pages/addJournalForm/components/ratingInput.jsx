@@ -16,7 +16,7 @@ const RatingInput = forwardRef(function RatingInput(
 
   return (
     <>
-      <Form.Label>{title}</Form.Label>
+      <Form.Label className="questionTitle">{title}</Form.Label>
       <InputGroup className="mb-4">
         <Form.Control 
           type="number"
